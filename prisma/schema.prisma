@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String?   @unique @db.VarChar(255)
+  name      String    @db.VarChar(255)
+  email     String    @unique
+  password  String
+  clubs     Club[]
+  posts     Post[]
+  profile   Profile?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Club {
+  clubid    String   @id @default(uuid())
+  authors   User?    @relation(fields: [authorsId], references: [id])
+  authorsId String?
+  members   String[]
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  postid    String   @id @default(uuid())
+  authors   User?    @relation(fields: [authorsId], references: [id])
+  authorsId String?
+  club      Club?    @relation(fields: [clubId], references: [clubid])
+  clubId    String?
+  title     String
+  contents  String?
+  images    Bytes
+  likes     String[]
+  comments  Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile {
+  profileId String   @id @default(uuid())
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  gender    Gender?  @default(others)
+  age       Int?
+  interests String[]
+  about     String?
+  address   Json     @db.Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Gender {
+  male
+  female
+  transgender
+  others
+}
+
+// Add these values for track time
+// createdAt DateTime @default(now())
+// updatedAt DateTime @updatedAt

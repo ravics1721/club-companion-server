@@ -5,20 +5,15 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const app = express();
-
+const routes = require("./routes")
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get("/", (req, res) => {
-    res.json({
-        status: 200,
-        message: "Welcome to the Club Companion API 🌍",
-        docs: "docs link will be here",
-    });
-});
+//Defines all routes
+app.use("/", routes);
 
 
 //PORT Declration
