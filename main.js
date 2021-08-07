@@ -2,15 +2,12 @@
 const env = require('dotenv');
 env.config();
 const express = require("express");
-const logger = require("morgan");
-const cors = require("cors");
-const app = express();
+const middleware = require("./middlewares/index");
 const router = require("./routes")
-app.use(cors());
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const app = express();
 
+//initialize middleware 
+middleware.main(app);
 
 //Defines all routes
 router.init(app);
