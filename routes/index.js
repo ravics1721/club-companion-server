@@ -1,14 +1,11 @@
 const express = require('express');
 const authRoutes = require('./auth');
-const router = express.Router();
 const usersRoutes = require('./user');
+const commonRoutes = require('./common');
 
-router.get("/", (req, res) => {
-    res.json({
-        message: "Welcome to the club companion server"
-    })
-})
-
-router.use(authRoutes);
-router.use(usersRoutes);
+const router = {
+    init: (app) => {
+        app.use("/", commonRoutes);
+    }
+}
 module.exports = router;

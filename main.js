@@ -5,7 +5,7 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const app = express();
-const routes = require("./routes")
+const router = require("./routes")
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
@@ -13,8 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //Defines all routes
-app.use("/", routes);
-
+router.init(app);
 
 //PORT Declration
 const PORT = process.env.PORT || 5050;
