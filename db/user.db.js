@@ -1,13 +1,18 @@
 const prisma = require("../prisma");
 
 const userDB = {
-  isUserExists: async (email) => {
+  findUserByEmail: async (email) => {
     const result = await prisma.user.findUnique({
-      select: {
+      where: {
         email: email,
       },
     });
     return result;
+  },
+  addNewUser: async (user) => {
+    return await prisma.user.create({
+      data: user,
+    });
   },
 };
 
