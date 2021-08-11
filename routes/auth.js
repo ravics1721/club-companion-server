@@ -1,19 +1,10 @@
-const express = require('express');
-const Prisma = require("@prisma/client");
+const express = require("express");
+const authCtr = require("../controllers/auth.ctr");
+const authMdle = require("../middlewares/auth");
+const services = require("../services/index");
 const authRoutes = express.Router();
 
-const prisma = new Prisma.PrismaClient();
-
-authRoutes.post("/signup",async (req, res) => {
-    const user = await prisma.user.create({
-        data: {
-            ...req.body
-        }
-    });
-    res.json({
-        message: "completed",
-        data: user
-    })
-})
+authRoutes.post("/signup", authCtr.signup, authMdle.isUserExists, services.addNewUser);
+authRoutes.post("/login", authCtr.login, services.loginUser);
 
 module.exports = authRoutes;
